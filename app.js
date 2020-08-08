@@ -40,10 +40,10 @@ import responseTime from 'response-time';
 import Sentry from '@sentry/node';
 import { logger, logToPapertrail, suppressConsoleLog } from './lib/logger';
 import * as utils from './lib/utils';
-import { initialiseWine as initialiseWine$0 } from './lib/exec';
+import { initialiseWine } from './lib/exec';
 import RouteAPI from './lib/handlers/route-api';
 import aws from './lib/aws';
-import * as google from './lib/google';
+import { ShortLinkResolver } from './lib/google';
 import { list } from './lib/languages';
 import { policy } from './lib/csp';
 import ClientOptionsHandler from './lib/options-handler';
@@ -66,7 +66,7 @@ import { createRequire } from 'module';
 const startTime = new Date();
 // Initialise options and properties. Don't load any handlers here; they
 // may need an initialised properties library.
-const initialiseWine = { initialiseWine: initialiseWine$0 }.initialiseWine;
+
 // Parse arguments from command line 'node ./app.js args...'
 const opts = nopt({
     env: [String, Array],
@@ -328,7 +328,7 @@ function shouldRedactRequestData(data) {
     }
 }
 
-const googleShortUrlResolver = new google.ShortLinkResolver();
+const googleShortUrlResolver = new ShortLinkResolver();
 
 function oldGoogleUrlHandler(req, res, next) {
     const bits = req.url.split('/');
