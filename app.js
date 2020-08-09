@@ -60,7 +60,6 @@ import morgan from 'morgan';
 import compression from 'compression';
 import * as healthCheck from './lib/handlers/health-check';
 import normalizer from './lib/clientstate-normalizer';
-import { resolvePathFromAppRoot } from './lib/utils';
 import { createRequire } from 'module';
 
 const startTime = new Date();
@@ -115,7 +114,7 @@ if (opts.tmpDir) {
     process.env.winTmp = path.join('/mnt', driveLetter, directoryPath);
 }
 
-const distPath = resolvePathFromAppRoot('out', 'dist');
+const distPath = utils.resolvePathFromAppRoot('out', 'dist');
 
 const gitReleaseName = (() => {
     // Use the canned git_hash if provided
@@ -658,7 +657,7 @@ async function main() {
             res.set('Content-Type', 'application/xml');
             res.render('sitemap');
         })
-        .use(sFavicon(resolvePathFromAppRoot('static', 'favicon.ico')))
+        .use(sFavicon(utils.resolvePathFromAppRoot('static', 'favicon.ico')))
         .get('/client-options.js', (req, res) => {
             staticHeaders(res);
             res.set('Content-Type', 'application/javascript');
